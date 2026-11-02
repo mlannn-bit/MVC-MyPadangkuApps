@@ -1,11 +1,25 @@
-# Java
-*.class
-
-# Maven
+# Maven build output
 target/
 
-# VS Code
-.vscode/
+# Java compiled files
+*.class
+
+# Java package files
+*.jar
+*.war
+*.ear
 
 # Environment variables and secrets
 .env
+.env.*
+
+# Logs
+*.log
+
+# IDE settings
+.vscode/
+
+# Operating system files
+.DS_Store
+Thumbs.db
+desktop.ini
