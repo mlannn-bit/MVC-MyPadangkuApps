@@ -16,10 +16,9 @@ public class MenuRepository {
     public List<Menu> getAll() throws SQLException {
 
         List<Menu> menuList = new ArrayList<>();
-        
-        try (Connection connection = DatabaseConnection.getConnection()) {
+        String sql = "SELECT * FROM menu";
 
-            String sql = "SELECT * FROM menu";
+        try (Connection connection = DatabaseConnection.getConnection()) {
 
             PreparedStatement statement = connection.prepareStatement(sql);
             ResultSet result = statement.executeQuery();
@@ -38,5 +37,48 @@ public class MenuRepository {
         }
 
         return menuList;
+    }
+
+    public void insert(Menu menu) throws SQLException {
+
+        String sql = "INSERT INTO menu (nama_menu, harga, kategori, stok) VALUES (?, ?, ?, ?)";
+
+        try(Connection connection = DatabaseConnection.getConnection()) {
+
+            PreparedStatement statement = connection.prepareStatement(sql);
+            statement.setString(1, menu.getNamaMenu());
+            statement.setInt(2, menu.getHarga());
+            statement.setString(3, menu.getKategori());
+            statement.setInt(4, menu.getStok());
+
+            statement.executeUpdate();
+        }
+    }
+
+    public void update(Menu menu) throws SQLException {
+
+        String sql = "UPDATE menu SET nama_menu = ?, harga = ?, kategori = ?, stok = ? WHERE id_menu = ?";
+
+        try(Connection connection = DatabaseConnection.getConnection()) {
+            PreparedStatement statement = connection.prepareStatement(sql);
+            statement.setString(1, menu.getNamaMenu());
+            statement.setInt(2, menu.getHarga());
+            statement.setString(3, menu.getKategori());
+            statement.setInt(4, menu.getStok());
+            statement.setInt(5, menu.getIdMenu());
+
+            statement.executeUpdate();
+        }
+    }
+
+    public  void delete(int id_menu) throws SQLException {
+
+        String sql = "DELETE FROM menu WHERE id_menu = ?";
+
+        try(Connection connection = DatabaseConnection.getConnection()) {
+            PreparedStatement statement = connection.prepareStatement(sql);
+            statement.setInt(1, id_menu);
+            statement.executeUpdate();
+        }
     }
 }
