@@ -1,56 +1,41 @@
 package com.mypadangku;
 
+import com.mypadangku.model.Menu;
+import com.mypadangku.service.MenuService;
+import com.mypadangku.errors.MenuException;
 import java.sql.SQLException;
 import java.util.List;
-
-import com.mypadangku.model.Menu;
-import com.mypadangku.repository.MenuRepository;
 
 public class Main {
     public static void main(String[] args) {
 
-        MenuRepository mr = new MenuRepository();
-        Menu m1 = new Menu("Soto Rongawi", 20000, "Makanan", 10);
-        Menu m2 = new Menu(1, "Rendang", 20000, "Makanan", 50);
-        
+        MenuService menuService = new MenuService();
 
         try {
-            List<Menu> daftarMenu = mr.getAll();
+            Menu menu = new Menu(1, "Dendeng Balado", 35000, "Makanan", 15);
+            menuService.update(menu);
 
-            for(Menu menu : daftarMenu) {
-                System.out.println("ID :M-" + menu.getIdMenu());
-                System.out.println("Nama :" + menu.getNamaMenu());
-                System.out.println("Harga :" + menu.getHarga());
-                System.out.println("Kategori :" + menu.getKategori());
-                System.out.println("Stok :" + menu.getStok());
-                System.out.println("-------------------------");
-            }
-        } catch (SQLException e) {
-            System.out.println("Gagal!");
-            e.printStackTrace();
+            System.out.println("Menu berhasil ditambahkan!");
+
+        } catch (SQLException | MenuException e) {
+            System.out.println("Gagal menambahkan menu: " + e.getMessage());
         }
 
         try {
-            mr.delete(10);
-        } catch(Exception e) {
-            e.printStackTrace();
-            System.out.println("Gagal!");
-        }
+            List<Menu> daftarMenu = menuService.getAll();
 
-        try {
-            List<Menu> daftarMenu = mr.getAll();
-
-            for(Menu menu : daftarMenu) {
-                System.out.println("ID :M-" + menu.getIdMenu());
-                System.out.println("Nama :" + menu.getNamaMenu());
-                System.out.println("Harga :" + menu.getHarga());
-                System.out.println("Kategori :" + menu.getKategori());
-                System.out.println("Stok :" + menu.getStok());
-                System.out.println("-------------------------");
+            for (Menu menu : daftarMenu) {
+                System.out.println(
+                    menu.getIdMenu() + " | " +
+                    menu.getNamaMenu() + " | " +
+                    menu.getHarga() + " | " +
+                    menu.getKategori() + " | " +
+                    menu.getStok()
+                );
             }
+
         } catch (SQLException e) {
-            System.out.println("Gagal!");
-            e.printStackTrace();
+            System.out.println("Gagal mengambil data: " + e.getMessage());
         }
 
     }
